@@ -6,7 +6,7 @@
  * Remember, asteroids should only spawn through the AsteroidSpawner script. 
  
 * Requirements:
-* 1. Done The asteroid should start with a constant speed but a random angular velocity. Both of these are set in the Rigidbody2D
+* 1. (Done) The asteroid should start with a constant speed but a random angular velocity. Both of these are set in the Rigidbody2D
 *       The movement direction of the asteroid should not change. 
 *       Hint: All movement for the asteroid should be done via a Rigidbody2D and should be able to be set at Start.
 * 2. When the asteroid is destroyed, it should spawn two smaller asteroids if it is not already the smallest size. 
@@ -50,12 +50,18 @@ public class Asteroid : MonoBehaviour
 
     private void BreakAsteroid()
     {
+        if (size != AsteroidSize.Small)
+        {
+            SpawnChildren(GetSmallerSize());
+        }
+
         Destroy(gameObject);
     }
 
     private void SpawnChildren(AsteroidSize childSize)
     {
-        
+       //spawn smaller
+       Debug.Log(childSize);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -67,6 +73,20 @@ public class Asteroid : MonoBehaviour
         else if (collision.gameObject.CompareTag("Player"))
         {
             Destroy(collision.gameObject);
+        }
+    }
+
+    private AsteroidSize GetSmallerSize()
+    {
+        switch (size)
+        {
+            case AsteroidSize.Large:
+                return AsteroidSize.Medium;
+            case AsteroidSize.Medium:
+                return AsteroidSize.Small;
+            default:
+                return AsteroidSize.Small;
+
         }
     }
 }
