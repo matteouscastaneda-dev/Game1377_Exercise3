@@ -23,11 +23,13 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        rb.linearVelocity = transform.up * bulletSpeed;
+        Destroy(gameObject, bulletLifetime);
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-
+        Destroy(gameObject);
     }
 }

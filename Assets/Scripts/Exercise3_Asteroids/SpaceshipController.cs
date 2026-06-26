@@ -69,7 +69,10 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleFire()
     {
-
+        if (Input.GetButtonDown("Jump"))
+        {
+            FireBullet();
+        }
     }
 
     private void FireBullet()
