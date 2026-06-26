@@ -7,9 +7,9 @@
  * 
  * Requirements:
  * PART 1: Player Movement
- * 1. The player should be able to rotate the ship left and right using A/D keys from an input axis.
+ * 1. The player should be able to rotate the ship left and right using A/D keys from an input axis. (DONE)
  *      This movement should be done with Transform based movement. 
- * 2. The player should be able to thrust forward using only the W key from an input axis
+ * 2. The player should be able to thrust forward using only the W key from an input axis. (DONE)
  *      This movement should be done with physics applied to a RigidBody2D. 
  * 3. The player should be able to wrap around the screen when they go off one edge and come back on the other side.
  * 4. The player should be able to teleport to a random location on the screen using left shift in an input button. You 
@@ -56,12 +56,15 @@ public class AsteroidsPlayerController : MonoBehaviour
 
     private void HandleRotation()
     {
-
+        transform.Rotate(Vector3.forward, -rotationInput * rotationSpeed * Time.deltaTime);
     }
 
     private void HandleThrust()
     {
-        
+        if (thrustInput > 0)
+        {
+            rb.AddForce(transform.up * thrustForce * Time.deltaTime);
+        }
     }
 
     private void HandleFire()
