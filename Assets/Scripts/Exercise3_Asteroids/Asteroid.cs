@@ -25,22 +25,22 @@ public class Asteroid : MonoBehaviour
     [SerializeField] private float minRotationSpeed = -180f;
     [SerializeField] private float maxRotationSpeed = 180f;
 
+    [SerializeField] private int ChildCount = 2;
+
     private Rigidbody2D rb;
     private AsteroidSpawner spawner;
-    private Vector2 velocity;
 
     void Start()
     {
         //Give the asteroid a random linear and angular velocity.
         rb = GetComponent<Rigidbody2D>();
 
-        velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        Vector2 velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
 
         rb.linearVelocity = velocity * speed;
         rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
 
         spawner = Object.FindAnyObjectByType<AsteroidSpawner>();
-        Debug.Log(spawner);
     }
 
     void Update()
@@ -58,10 +58,13 @@ public class Asteroid : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Spawns 2 smaller asteroids
     private void SpawnChildren(AsteroidSize childSize)
     {
-       spawner.SpawnAsteroid(transform.position, childSize);
-       spawner.SpawnAsteroid(transform.position, childSize);
+       for (int spawnIndex = 0; spawnIndex < ChildCount; spawnIndex ++)
+        {
+            spawner.SpawnAsteroid(transform.position, childSize);
+        }
     }
 
     void OnCollisionEnter2D(Collision2D collision)
