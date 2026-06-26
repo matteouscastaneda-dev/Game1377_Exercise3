@@ -36,6 +36,7 @@ public class Asteroid : MonoBehaviour
 
     void Update()
     {
+
     }
 
     private void BreakAsteroid()
