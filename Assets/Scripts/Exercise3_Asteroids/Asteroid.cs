@@ -21,7 +21,7 @@ public class Asteroid : MonoBehaviour
     public enum AsteroidSize { Small, Medium, Large }
 
     [SerializeField] private AsteroidSize size;
-    [SerializeField] private float speed;
+    [SerializeField] private float speed = 10f;
     [SerializeField] private float minRotationSpeed = -180f;
     [SerializeField] private float maxRotationSpeed = 180f;
 
@@ -31,7 +31,13 @@ public class Asteroid : MonoBehaviour
 
     void Start()
     {
-    
+        //Give the asteroid a random direction and speed
+        rb = GetComponent<Rigidbody2D>();
+
+        Vector2 direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+
+        rb.linearVelocity = direction * speed;
+        rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
     }
 
     void Update()
