@@ -19,6 +19,10 @@ using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
+    [SerializeField] private GameObject asteroidSmallPrefab;
+    [SerializeField] private GameObject asteroidMediumPrefab;
+    [SerializeField] private GameObject asteroidLargePrefab;
+
     // These variables determine the spawn area for the asteroids.
     // They are calculated at Start based off of the camera size. 
     private float spawnXMax = 0f;
@@ -40,7 +44,7 @@ public class AsteroidSpawner : MonoBehaviour
 
     void Update()
     {
-        
+       
     }
 
     private void SpawnInitialAsteroids()
@@ -50,6 +54,24 @@ public class AsteroidSpawner : MonoBehaviour
 
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-       // Spawn an asteroid at the location specified by position parameter with the size specified by the size parameter.
+        GameObject asteroidToSpawn;
+
+        switch (size)
+        {
+            case Asteroid.AsteroidSize.Small:
+                asteroidToSpawn = asteroidSmallPrefab;
+                break;
+            case Asteroid.AsteroidSize.Medium:
+                asteroidToSpawn = asteroidMediumPrefab;
+                break;
+            case Asteroid.AsteroidSize.Large:
+                asteroidToSpawn = asteroidLargePrefab;
+                break;
+            default:
+                asteroidToSpawn = asteroidSmallPrefab;
+                break;
+        }
+
+        Instantiate(asteroidToSpawn, position, Quaternion.identity);
     }
 }
