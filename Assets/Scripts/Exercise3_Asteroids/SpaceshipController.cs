@@ -63,7 +63,7 @@ public class AsteroidsPlayerController : MonoBehaviour
     {
         if (thrustInput > 0)
         {
-            rb.AddForce(transform.up * thrustForce * Time.deltaTime);
+            rb.AddForce(transform.up * thrustForce, ForceMode2D.Force);
         }
     }
 

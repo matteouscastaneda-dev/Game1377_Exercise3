@@ -74,4 +74,20 @@ public class AsteroidSpawner : MonoBehaviour
 
         Instantiate(asteroidToSpawn, position, Quaternion.identity);
     }
+
+    //Uses the screen bounds and the playerSafeDistance to get a random spawn position
+    private Vector3 GetRandomSpawnPosition()
+    {
+        Vector3 spawnPosition;
+
+        do
+        {
+            float spawnLocationX = Random.Range(spawnXMin, spawnXMax);
+            float spawnLocationY = Random.Range(spawnYMin, spawnYMax);
+            spawnPosition = new Vector2(spawnLocationX, spawnLocationY);
+        } 
+        
+        while (Vector3.Distance(spawnPosition, Vector3.zero) < playerSafeDistance);
+        return spawnPosition;
+    }
 }
