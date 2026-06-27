@@ -35,9 +35,9 @@ public class Asteroid : MonoBehaviour
         //Give the asteroid a random linear and angular velocity.
         rb = GetComponent<Rigidbody2D>();
 
-        Vector2 velocity = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        Vector2 Direction = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
 
-        rb.linearVelocity = velocity * speed;
+        rb.linearVelocity = Direction * speed;
         rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
 
         spawner = Object.FindAnyObjectByType<AsteroidSpawner>();
