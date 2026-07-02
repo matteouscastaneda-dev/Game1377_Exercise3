@@ -46,7 +46,7 @@ public class AsteroidSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// spawn the starting 3 asteroids
+    /// spawn the starting 5 asteroids
     /// </summary>
     private void SpawnInitialAsteroids()
     {
