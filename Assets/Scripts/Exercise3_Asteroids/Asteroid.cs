@@ -40,7 +40,7 @@ public class Asteroid : MonoBehaviour
         rb.linearVelocity = Direction * speed;
         rb.angularVelocity = Random.Range(minRotationSpeed, maxRotationSpeed);
 
-        spawner = Object.FindAnyObjectByType<AsteroidSpawner>();
+
     }
 
     void Update()
@@ -91,5 +91,14 @@ public class Asteroid : MonoBehaviour
                 return AsteroidSize.Small;
 
         }
+    }
+
+    /// <summary>
+    /// Set the spawner reference
+    /// </summary>
+    /// <param name="newSpawner"></param>
+    public void SetSpawner(AsteroidSpawner newSpawner)
+    {
+        spawner = newSpawner;
     }
 }

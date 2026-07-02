@@ -6,15 +6,16 @@
  * ALL ASTEROID SPAWNING SHOULD OCCUR THROUGH THIS SCRIPT. 
  
 * Requirements:
-* 1. Fill in the SpawnAsteroids method to spawn an asteroid at a location specified by the position and size parameters.
+* 1. (Done) Fill in the SpawnAsteroids method to spawn an asteroid at a location specified by the position and size parameters.
 *       Hint: You may need to create a variable for the prefabs you need. 
 *       Hint: Use the spawnXMax, spawnXMin, spawnYMax, and spawnYMin variables to determine where the asteroids can spawn.
-* 2. Spawn a variable number of asteroids at the start of the game using the SpawnInitialAsteroids() method.
+* 2. (Done) Spawn a variable number of asteroids at the start of the game using the SpawnInitialAsteroids() method.
 *       This should be determined by a private variable that can be set in the editor (set it to 5 in the Inspector). 
 *       The asteroids should spawn at random positions within the camera view, but not too close to the center (0,0)
 *       where the player will be (at least 3 units away from the center in any direction).
 *       Hint: Vector3.Distance can tell you how far one point is away from another. 
 */
+using UnityEditor.UI;
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
@@ -44,11 +45,9 @@ public class AsteroidSpawner : MonoBehaviour
         SpawnInitialAsteroids();
     }
 
-    void Update()
-    {
-       
-    }
-
+    /// <summary>
+    /// spawn the starting 3 asteroids
+    /// </summary>
     private void SpawnInitialAsteroids()
     {
         for (int asteroidCount = 0; asteroidCount < initialAsteroidCount; asteroidCount++)
@@ -59,6 +58,12 @@ public class AsteroidSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spawn asteriod based on the size and passes a spawner reference 
+    /// to the new asteroids
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="size"></param>
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
         GameObject asteroidToSpawn;
@@ -79,10 +84,20 @@ public class AsteroidSpawner : MonoBehaviour
                 break;
         }
 
-        Instantiate(asteroidToSpawn, position, Quaternion.identity);
+       GameObject newSpawn = Instantiate(asteroidToSpawn, position, Quaternion.identity);
+
+        Asteroid asteroidScript = newSpawn.GetComponent<Asteroid>();
+        if (asteroidScript !=null)
+        {
+            asteroidScript.SetSpawner(this);
+        }
+
     }
 
-    //Uses the screen bounds and the playerSafeDistance to get a random spawn position
+    /// <summary>
+    /// gets a random spawn position that is far enough from the player
+    /// </summary>
+    /// <returns></returns>
     private Vector3 GetRandomSpawnPosition()
     {
         Vector3 spawnPosition;
