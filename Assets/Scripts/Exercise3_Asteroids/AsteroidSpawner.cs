@@ -1,33 +1,11 @@
-/*
- * Assignment: Asteroids Game - AstroidSpawner Script - PART 2
- * 
- * Objective: Create a functional asteroid spawning script. This script will be responsible for spawning
- * asteroids at the start of the game, as well as spawning smaller asteroids when larger asteroids are destroyed. 
- * ALL ASTEROID SPAWNING SHOULD OCCUR THROUGH THIS SCRIPT. 
- 
-* Requirements:
-* 1. (Done) Fill in the SpawnAsteroids method to spawn an asteroid at a location specified by the position and size parameters.
-*       Hint: You may need to create a variable for the prefabs you need. 
-*       Hint: Use the spawnXMax, spawnXMin, spawnYMax, and spawnYMin variables to determine where the asteroids can spawn.
-* 2. (Done) Spawn a variable number of asteroids at the start of the game using the SpawnInitialAsteroids() method.
-*       This should be determined by a private variable that can be set in the editor (set it to 5 in the Inspector). 
-*       The asteroids should spawn at random positions within the camera view, but not too close to the center (0,0)
-*       where the player will be (at least 3 units away from the center in any direction).
-*       Hint: Vector3.Distance can tell you how far one point is away from another. 
-*/
-using UnityEditor.UI;
 using UnityEngine;
 
 public class AsteroidSpawner : MonoBehaviour
 {
-    [SerializeField] private GameObject asteroidSmallPrefab;
-    [SerializeField] private GameObject asteroidMediumPrefab;
-    [SerializeField] private GameObject asteroidLargePrefab;
+    [SerializeField] private GameObject[] asteroidPrefabs;
 
     [SerializeField] private int initialAsteroidCount = 5;
 
-    // These variables determine the spawn area for the asteroids.
-    // They are calculated at Start based off of the camera size. 
     private float spawnXMax = 0f;
     private float spawnXMin = 0f;
     private float spawnYMax = 0f;
@@ -46,7 +24,7 @@ public class AsteroidSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// spawn the starting 5 asteroids
+    /// Spawns the starting wave at safe random positions
     /// </summary>
     private void SpawnInitialAsteroids()
     {
@@ -59,57 +37,35 @@ public class AsteroidSpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Spawn asteriod based on the size and passes a spawner reference 
-    /// to the new asteroids
+    /// Spawns a single asteroid of the given size at the given position 
+    /// and passes it a spawner reference
     /// </summary>
-    /// <param name="position"></param>
-    /// <param name="size"></param>
     public void SpawnAsteroid(Vector3 position, Asteroid.AsteroidSize size)
     {
-        GameObject asteroidToSpawn;
+        GameObject asteroidToSpawn = asteroidPrefabs[(int)size];
 
-        switch (size)
-        {
-            case Asteroid.AsteroidSize.Small:
-                asteroidToSpawn = asteroidSmallPrefab;
-                break;
-            case Asteroid.AsteroidSize.Medium:
-                asteroidToSpawn = asteroidMediumPrefab;
-                break;
-            case Asteroid.AsteroidSize.Large:
-                asteroidToSpawn = asteroidLargePrefab;
-                break;
-            default:
-                asteroidToSpawn = asteroidSmallPrefab;
-                break;
-        }
-
-       GameObject newSpawn = Instantiate(asteroidToSpawn, position, Quaternion.identity);
+        GameObject newSpawn = Instantiate(asteroidToSpawn, position, Quaternion.identity);
 
         Asteroid asteroidScript = newSpawn.GetComponent<Asteroid>();
-        if (asteroidScript !=null)
+        if (asteroidScript != null)
         {
             asteroidScript.SetSpawner(this);
         }
-
     }
 
-    /// <summary>
-    /// gets a random spawn position that is far enough from the player
-    /// </summary>
-    /// <returns></returns>
-    private Vector3 GetRandomSpawnPosition()
+/// <summary>
+/// Returns a random spawn position that is far enough from the center to be safe for the player
+/// </summary>
+private Vector3 GetRandomSpawnPosition()
+{
+    Vector3 spawnPosition;
+
+    do
     {
-        Vector3 spawnPosition;
-
-        do
-        {
-            float spawnLocationX = Random.Range(spawnXMin, spawnXMax);
-            float spawnLocationY = Random.Range(spawnYMin, spawnYMax);
-            spawnPosition = new Vector2(spawnLocationX, spawnLocationY);
-        } 
-        
-        while (Vector3.Distance(spawnPosition, Vector3.zero) < playerSafeDistance);
-        return spawnPosition;
-    }
+        float spawnLocationX = Random.Range(spawnXMin, spawnXMax);
+        float spawnLocationY = Random.Range(spawnYMin, spawnYMax);
+        spawnPosition = new Vector2(spawnLocationX, spawnLocationY);
+    } while (Vector3.Distance(spawnPosition, Vector3.zero) < playerSafeDistance);
+    return spawnPosition;
+}
 }
